@@ -16,13 +16,12 @@ C. Mike Pilato helped design the db schema, and I'm guessing will
 undoubtedly make the web interface look beauuuuutiful with CSS stuff.
 
 
-Required Tools
-==============
+Server Requirements
+===================
 
-* At least MySQL 3.23.
-* Python 2.2
-* A webserver that can run CGI scripts (like Apache)
-* ...?
+* At least MySQL 3.23
+* At least Python 2.X
+* A webspace that can run CGI scripts
 
 
 How to Install
@@ -30,9 +29,9 @@ How to Install
 
 * Install a CGI-capable webserver, like Apache.
    
-* Install Python 2.2 or later.
+* Install Python 2.0 or later.
 
-* Install MySQL.
+* Install MySQL 3.23 or later.
 
 * Create a new 'effrecipes' database (and 'effuser') as root:
 
