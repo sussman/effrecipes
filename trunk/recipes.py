@@ -29,6 +29,11 @@
 
 import MySQLdb
 
+# Callers to this library need to create a MySQL 'connection' object,
+# like so:
+#
+#  conn = MySQLdb.connect(user='effuser', passwd='effuser', db='effrecipes')
+
 
 # ------ UNITS -------------------------------------------------------
 
@@ -47,8 +52,9 @@ class Unit:
     record for Id."""
 
     if (self.UnitId):
-      fields = "Name=" + self.Name      
-      command = "UPDATE units SET " + fields + " WHERE UnitId=" + str(Id), ";"
+      fields = "Name='" + self.Name + "'"
+      command = "UPDATE units SET " + fields + " WHERE UnitId=" \
+                + str(self.UnitId) + ";"
 
     else:
       # by not mentioning the Id field, it should auto-increment.
@@ -57,13 +63,15 @@ class Unit:
       command = "INSERT INTO units " + fields + " VALUES " + values + ";"
 
     cursor = connection.cursor()
-    cursor.execute(command)  ### return error if failure?
+    cursor.execute(command)
 
   def delete(self, connection):
     """Delete object from database, keyed on its Id field."""
 
-    ### DELETE FROM table WHERE Id==self.UnitId.
-
+    command = "DELETE FROM units WHERE UnitId=" + str(self.UnitId) + ";"
+    cursor = connection.cursor()
+    cursor.execute(command)
+    
 
 # General 'read' interfaces which return object(s)
 
@@ -78,11 +86,24 @@ def unit_lookup(Id, connection):
 
 
 def unit_query(condition, connection):
-    "Return a list of objects resulting from a table query for CONDITION."
-    ### (Allow condition to be None, to fetch all records)
-    ### SELECT id FROM table WHERE condition
-    ### loop over rows, call constructor(self, Id) on each.
+    """Return a list of objects resulting from a table query for SQL
+    CONDITION.  If CONDITION is None, return all objects."""
 
+    query = "SELECT * FROM units"
+    if (condition):
+      query = query + " WHERE " + condition
+    query += ";"    
+    cursor = connection.cursor()
+    cursor.execute(query)
+
+    list = []
+    row = cursor.fetchone()
+    while row:
+      list.append(Unit(row[0], row[1]))
+      row = cursor.fetchone()
+
+    return list
+  
 
 # ------ INGREDIENTS -------------------------------------------------
 
