@@ -4,9 +4,8 @@ USE effrecipes;
 # Main table of recipes.
 CREATE TABLE recipes
   (       
-    RecipeId       INT,
+    RecipeId       INT,    # UNIQUE
     Name           VARCHAR(255),
-    Categories     INT,    # should be a list of CatIds, but how???          
     Rating         INT,
     Instructions   TEXT,
     Commentary     TEXT,
@@ -18,21 +17,31 @@ CREATE TABLE recipes
 # Categories:  breads, cakes, salads, etc.
 CREATE TABLE categories
   (
-    CatId       INT,
+    CatId       INT,          # UNIQUE
     Name        VARCHAR(100)
   );
+
+
+# Category lists:  each recipe might belong to N categories.
+CREATE TABLE category_lists
+  (
+    RecipeId    INT,       # non-unique
+    CatId       INT
+  );
+
 
 # Units:  teaspoon, tablespoons, cups, etc.
 CREATE TABLE units
   (
-    UnitId      INT,
+    UnitId      INT,       # UNIQUE
     Name        VARCHAR(100)
   );
+
 
 # Every kind of food:  bananas, flour, eggs, etc.
 CREATE TABLE ingredients
   (
-    IngId       INT,
+    IngId       INT,       # UNIQUE
     Name        VARCHAR(255)
   );
 
@@ -40,16 +49,17 @@ CREATE TABLE ingredients
 # ingredient list.
 CREATE TABLE ingredient_lists
   (
-    RecipeId    INT,
-    Amount      REAL,
-    UnitId      INT,
-    IngId       INT
+    RecipeId    INT,  # non-unique
+    Amount      REAL, # 3
+    UnitId      INT,  # cups
+    IngId       INT,  # spinach
+    Verb        TEXT  # "chopped"
   );
 
 # A typical user database, for users of the system.
 CREATE TABLE users
   (
-    UserId      INT,
+    UserId      INT,          # UNIQUE
     Username    VARCHAR(30),
     Password    VARCHAR(15),
     Realname    VARCHAR(50),
@@ -59,7 +69,7 @@ CREATE TABLE users
 # Multiple entries per user, allowing them to list likes/dislikes/allergies.
 CREATE TABLE userprefs
   (
-    UserId      INT,
+    UserId      INT,         # non-unique
     IngId       INT,
     Kind        ENUM('like', 'dislike', 'allergy')
   );
@@ -67,7 +77,10 @@ CREATE TABLE userprefs
 # Mulitple entries per user, allowing them to rate a recipe.
 CREATE TABLE votes
   (
-    RecipeId    INT,
-    UserId      INT,
+    RecipeId    INT,         # UNIQUE key #1
+    UserId      INT,         # UNIQUE key #2
     Vote        INT
   );
+
+# Sanity check -- print out the list of tables.
+SHOW TABLES;

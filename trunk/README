@@ -1,0 +1,59 @@
+
+                             Effrecipes
+         A recipe database for the web, using python/CGI/MySQL.
+
+This software was started by Ben Collins-Sussman in February 2003, for
+his wife Frances (a.k.a. "Eff").  Therefore, the DB schema and
+software feature set is incredibly specific to Eff's needs.  If you
+don't like it, too bad.  This is the perk Frances gets from marrying a
+programmer.  :-)
+
+Ben retains the copyright to this code, but license is in the file
+COPYING, which is essentially an Apache/BSD-style license.
+
+For a complete list of authors, read the Subversion log messages.
+C. Mike Pilato helped design the db schema, and I'm guessing will
+undoubtedly make the web interface look beauuuuutiful with CSS stuff.
+
+
+Required Tools
+==============
+
+* At least MySQL 3.23.
+* Python 2.2
+* A webserver that can run CGI scripts (like Apache)
+* ...?
+
+
+How to Install
+==============
+
+* Install a CGI-capable webserver, like Apache.
+   
+* Install Python 2.2 or later.
+
+    (### any need for specific modules?)
+
+* Install MySQL on your system.
+
+    (### user accounts to create?)
+
+* Create the database.
+
+    $ mysql -u [username] -p < init-tables.sql
+
+   init-tables.sql will create a new database called 'effrecipes'.
+   Within this database, it creatse all the tables as user [username],
+   and as a sanity check, prints out a list of the tables.
+
+   If you want to destroy the database and start over, run
+
+    $ mysql -u [username] -p
+    Enter password:  XXXXX
+    mysql> drop database effrecipes;
+    Query OK
+
+* Put the CGI scripts in some CGI-exported web directory.
+
+   ### yada yada
+
