@@ -1,0 +1,30 @@
+
+<!-- Zope Page Template (ZPT) using Template Attribute Language (TAL) -->
+
+<!-- Display input form for editing a RecipeCatalog -->
+
+<html>
+
+<head>
+</head>
+
+<body>
+
+<form method="post" action="editRecipeCatalog">
+  <table border="0" cellspacing="0" cellpadding="5">
+   <tr>
+     <td>Recipe Catalog Title:</td>
+     <td><input type="text" name="id" 
+                tal:attributes="value string:here/title"></td>
+   </tr>
+
+   <tr>
+     <td colspan="2">
+       <input type="submit" value="Edit Recipe Catalog">
+     </td>
+   </tr>
+  </table>
+</form>
+
+</body>
+</html>
