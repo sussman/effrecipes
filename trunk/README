@@ -34,17 +34,18 @@ How to Install
 
 * Install MySQL.
 
-* Create a new 'effrecipes' database (and user) as 'root':
+* Create a new 'effrecipes' database (and 'effuser') as root:
 
     $ mysql -u root -p < init-database.sql
 
 * Initialize the 'effrecipes' database tables as user 'effuser':
 
     $ mysql -u effuser -p < init-tables.sql
+    Enter password:  effuser
 
 * If you want to destroy the database and start over, run
 
-    $ mysql -u [username] -p
+    $ mysql -u root -p
     Enter password:  XXXXX
     mysql> drop database effrecipes;
     Query OK
