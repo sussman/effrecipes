@@ -1,0 +1,28 @@
+
+Initial features
+----------------
+
+ Just enough to be useful -- so people can start sharing recipes on-line.
+
+       - basic branding of website.
+
+       - searchable database of 'published' recipes.
+
+       - users can create accounts for themselves, write their own
+         recipes and submit them for approval/publishing (by Eff)
+
+       - each recipes can have a threaded discussion attached
+
+       - allow users to rate recipes (so recipes can have an 'average
+         score', like amazon book reviews)
+
+
+
+Future, Advanced Features
+-------------------------
+
+       - ability to group recipes into menus, and generate shopping
+         lists.
+
+       - allow users to enter food likes/dislikes/allergies
+
