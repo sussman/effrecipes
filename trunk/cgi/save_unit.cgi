@@ -5,10 +5,17 @@
 
 # Edit a "Unit" record.
 
-import MySQLdb, cgi, recipes
+import MySQLdb, cgi
 
 # enable debugging:  displays detailed exceptions in web browser.
 import cgitb; cgitb.enable()
+
+# temporary:  eventually put 'effrecipes.py' into a standard PYTHONPATH
+# location, like /usr/lib/python2.3/site-pacakages/
+import sys
+sys.path.append('/home/sussman/projects/effrecipes/objects')
+import effrecipes
+
 
 # -----------------------------------------------------------------
 
@@ -25,7 +32,7 @@ def save_unit_record(form, conn):
 
   # This will either read an existing record (if id is an integer),
   # or create a new record (if id is None)
-  unit_object = recipes.Unit(id, name)
+  unit_object = effrecipes.Unit(id, name)
   unit_object.save(conn)
     
   if id is None:
@@ -40,7 +47,7 @@ def delete_unit_record(form, conn):
   name = form["unit_name"].value
   id = int(form["unit_id"].value)
   
-  unit_object = recipes.Unit(id, name)
+  unit_object = effrecipes.Unit(id, name)
   unit_object.delete(conn)
   
   print "Record deleted.<br/>"

@@ -5,10 +5,17 @@
 
 # Edit a "Unit" record.
 
-import MySQLdb, cgi, recipes
+import MySQLdb, cgi
 
 # enable debugging:  displays detailed exceptions in web browser.
 import cgitb; cgitb.enable()
+
+# temporary:  eventually put 'effrecipes.py' into a standard PYTHONPATH
+# location, like /usr/lib/python2.3/site-pacakages/
+import sys
+sys.path.append('/home/sussman/projects/effrecipes/objects')
+import effrecipes
+
 
 # -----------------------------------------------------------------
 
@@ -30,7 +37,7 @@ def print_new_form():
   
 def print_populated_form(Id, connection):
   # load object from the database, pre-populate form, Id not editable.
-  unit = recipes.unit_lookup(Id, connection)
+  unit = effrecipes.unit_lookup(Id, connection)
   
   print '<form method="POST" action="save_unit.cgi">\n'
   print 'Record Id:', unit.UnitId, '<br/>'
