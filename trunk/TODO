@@ -1,0 +1,18 @@
+-*- text -*-
+
+Create python functions (or *classes*?) specifically for querying and
+writing to each table.  These methods would encapsulate all of the SQL
+queries under the hood.
+
+Then the main script would devote itself to reading CGI data from
+forms, passing them to the SQL classes, and generating dynamic HTML
+results pages.
+
+Come up with an import/export format ASAP, perhaps xml.  Though a
+text-export format is also critical for emailing results to people.
+Then if I decide to change the schema and rebuild the database from
+scratch, we can dump/load as we do in svn.  It also means people can
+start entering recipes right away (either via CGI or by handwriting
+XML), and we won't risk losing the content.
+
+
