@@ -16,3 +16,20 @@ start entering recipes right away (either via CGI or by handwriting
 XML), and we won't risk losing the content.
 
 
+--------------
+
+Recipe edit form:
+
+   * all recipe fields
+
+   * special area:  edit a list of "ingredient_quantity" records
+
+       - the list is a query of all ing_q records that match recipe_id
+
+       - "edit list" button --> new popup window with standard
+         add/change/delete abilities
+
+       - <form> tag in popup window targets parent window, so it can
+         auto-refresh.
+
+

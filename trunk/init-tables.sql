@@ -55,11 +55,11 @@ CREATE TABLE ingredients
 # ingredient list.
 CREATE TABLE ingredient_quantities
   (
-    RecipeId    INT,  # non-unique
-    Amount      REAL, # 3
-    UnitId      INT,  # cups
-    IngId       INT,  # spinach
-    Verb        TEXT  # "chopped"
+    RecipeId    INT NOT NULL,  # non-unique
+    Amount      REAL,          # 3
+    UnitId      INT NOT NULL,  # cups
+    IngId       INT NOT NULL,  # spinach
+    Verb        TEXT           # "chopped"
   );
 
 # A typical user database, for users of the system.
