@@ -31,7 +31,7 @@ print "<b>Complete List of Records:</b>\n"
 
 print "<table border=1><tr><td>UnitID</td><td>Name</td></tr>\n"
 
-unitlist = recipes.unit_query(None, conn)
+unitlist = recipes.unit_list(None, conn)
 for record in unitlist:
   print "<tr>"
   print '<td><a href="edit_unit.cgi?Id='+ str(record.UnitId) \

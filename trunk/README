@@ -58,3 +58,14 @@ How to Install
     Options ExecCGI FollowSymLinks
    </Directory>
 
+
+
+Anatomy of Project
+==================
+
+* SQL layer:  init-database.sql, init-tables.sql
+
+* Python 'Object' Layer:  recipes.py
+
+* CGI Interface:  frontpage.cgi, edit_unit.cgi, save_unit.cgi
+
