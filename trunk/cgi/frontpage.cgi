@@ -9,7 +9,11 @@ import cgitb; cgitb.enable()
 
 import MySQLdb
 
-import recipes
+# temporary:  eventually put 'effrecipes.py' into a standard PYTHONPATH
+# location, like /usr/lib/python2.3/site-pacakages/
+import sys
+sys.path.append('/home/sussman/projects/effrecipes/objects')
+import effrecipes
 
 
 # -----------------------------------------------------------------
@@ -31,7 +35,7 @@ print "<b>Complete List of Records:</b>\n"
 
 print "<table border=1><tr><td>UnitID</td><td>Name</td></tr>\n"
 
-unitlist = recipes.unit_list(None, conn)
+unitlist = effrecipes.unit_list(None, conn)
 for record in unitlist:
   print "<tr>"
   print '<td><a href="edit_unit.cgi?Id='+ str(record.UnitId) \
