@@ -12,12 +12,12 @@
 		   mode string:view;
 		   use_label python:1">
 	  <div tal:repeat="field python: here.Schema().filterFields(isMetadata=0)">
-	    <span tal:condition="python:field.getName() not in ['body']">
+	    <span tal:condition="python:field.getName() not in ['instructions']">
 	      <span metal:use-macro="field_macro"/>
 	    </span>
 	  </div>
 	</tal:block>
-	<span tal:content="structure python: here.getBody(mimetype='text/html')"/>
+	<span tal:content="structure python: here.getInstructions(mimetype='text/html')"/>
 
       </div>
     </div>
