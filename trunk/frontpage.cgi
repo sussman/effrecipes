@@ -2,7 +2,15 @@
 
 # Generate an HTML front-page for the Effrecipe Database 
 
-import MySQLdb, cgi, recipes
+import cgi
+
+# enable debugging:  displays detailed exceptions in web browser.
+import cgitb; cgitb.enable()
+
+import MySQLdb
+
+import recipes
+
 
 # -----------------------------------------------------------------
 
