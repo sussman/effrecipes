@@ -1,0 +1,35 @@
+
+Okay, starting my 3rd attempt at the recipe database.  Doing it all by
+hand was waaaaay too time-consuming and wheel-reinventing.  Doing it
+as a Zope application was nicer, but the learning curve was still
+tremendously steep, and the results still looked ugly.  Hopefully
+doing it in Plone is yet another step "upwards" in terms of avoiding
+reinvention.
+
+
+OS X plone installation:
+
+  - start with "/Applications/Plone2/Tools/start default"
+  - site runs on localhost:8200
+
+Architecture:
+
+     Plone --> CMF --> Zope
+     (highlevel --> web app --> web OS)
+
+Notes from hazmat (Kapil Thangavelu <hazmat@objectrealms.net>):
+
+
+  - use 'cmf' and 'archetypes', in particular.
+  - create a 'cookbook' with a recipes attribute (btree)
+
+
+Archetypes:
+
+  - a way of defining new objects
+  - object fields can be queried, organized, linked etc.  the "database-ness"
+    is implicit in the functionality.
+
+
+
+
