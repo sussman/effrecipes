@@ -241,7 +241,6 @@ class IngredientQuantity:
     if (self.Verb is not None):
       command += "," + str(self.Verb)
     command += ")"
-    print "command is: ", command
     cursor = connection.cursor()
     run_sql(command, cursor)
 

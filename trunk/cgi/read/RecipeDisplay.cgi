@@ -38,13 +38,20 @@ print '<h1>Recipe: "' + recipe.Name + '"</h1></head>\n\n'
 
 print '<h2>Ingredients</h2>'
 print '<h3><a href="../write/RecipeEditIngs.cgi?Id=' + str(recipe.RecipeId) \
-        +'">(Add an ingredient)</a></h3>'
+        +'">(Change ingredient list)</a></h3>'
 
 
-print '<h3>'
-for record in recipe_ingredients:  # a bunch of IngredientQuantity records
-  print record.toString(), '<br/>'
-print "</h3><br/>"
+print "<table border=1>\n"
+for record in recipe_ingredients:
+  unit = effrecipes.unit_lookup(record.UnitId, conn)
+  ingredient = effrecipes.ingredient_lookup(record.IngId, conn)
+
+  print '<tr>'
+  print '<td>Amount = ' + str(record.Amount) + '</td>'
+  print '<td>' + unit.Name + '</td>'
+  print '<td>' + ingredient.Name + '</td>'
+  print '</tr><br/>'
+print "</table><br/>"
 
 # Show the recipe record itself
 
