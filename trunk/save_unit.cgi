@@ -20,13 +20,13 @@ def save_record(form, conn):
   else:
     id = None  # will create new record
     
-    unit_object = recipes.Unit(id, name)
-    unit_object.save(conn)
+  unit_object = recipes.Unit(id, name)
+  unit_object.save(conn)
     
-    if id != None:
-      print "Record with Id ", form["unit_id"].value, "has been saved.<br/>\n"
-    else:
-      print "New record created.<br/>"
+  if id != None:
+    print "Record with Id ", form["unit_id"].value, "has been saved.<br/>\n"
+  else:
+    print "New record created.<br/>"
 
 def delete_record(form, conn):
 
