@@ -55,9 +55,12 @@ How to Install
 
     (For my apache-2.0 httpd.conf, I did something like this:)
 
-   ScriptAlias /recipes/ "/absolute/path/to/effrecipes/"
-   <Directory "/absolute/path/to/effrecipes">
-    Options ExecCGI FollowSymLinks
+   AddHandler cgi-script .cgi
+
+   Alias /recipes/ "/absolute/path/to/effrecipes/"
+
+   <Directory "/absolute/path/to/effrecipes/">
+      Options ExecCGI FollowSymLinks
    </Directory>
 
 * To start using the database, open this url in your browser:
