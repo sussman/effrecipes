@@ -1,3 +1,9 @@
+# (C) 2003 Ben Collins-Sussman under the GNU General Public License.
+# See the file COPYING for details.
+
+# Initialization of recipe MySQL tables.
+
+
 CREATE DATABASE effrecipes;
 USE effrecipes;
 
