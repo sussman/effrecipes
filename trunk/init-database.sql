@@ -8,6 +8,6 @@ CREATE DATABASE effrecipes;
 
 USE mysql;
 
-GRANT ALL PRIVILEGES ON effrecipes
+GRANT ALL PRIVILEGES ON effrecipes.*
       TO effuser@localhost IDENTIFIED BY 'effuser';
 
