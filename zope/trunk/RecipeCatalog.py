@@ -4,7 +4,7 @@
 # (C) 2004 Ben Collins-Sussman under the GNU GPL.
 
 from OFS.SimpleItem import SimpleItem
-from Globals import DTMLFile
+from Globals import DTMLFile, HTMLFile
 
 
 # Global constructors for the module, referenced by __init__.py.
