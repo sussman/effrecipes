@@ -41,4 +41,126 @@ Archetypes:
     is implicit in the functionality.
 
 
+------------------------------
 
+Goal for today:
+
+  - get basic recipe.py type functional:
+
+    X    - enable discussion by default on a recipe.
+
+    X   - add 'ingredients' as a text field. 
+
+           --> write parser/validator!!
+
+        - choose correct widgets that render well, both for view & edit.
+
+       - front-page link to search-urls
+
+  - workflow:
+
+      - who gets to review/publish things?  how do roles work?
+
+  - new CSS template for displaying?
+
+       - try to make use of 'ratings' component.
+
+  - brand site, generically, for now.
+
+  - figure out a way to dump/load recipe documents (from python??)
+    learn about migration issues in general.
+
+  - install on win32 box when ready.
+
+
+
+
+
+
+
+----------------
+
+from Products.CMFCore.util import getToolByName
+from Products.Archetypes.public import *
+
+class Recipe(BaseContent):
+
+    # normal stuff
+
+    schema = Schema((
+        StringField('category',
+                    vocabulary='makeCategories'
+                    widget=SelectionWidget()
+        )
+        ))
+
+    def makeCategories(self):
+        catalog = getToolByName(self, 'portal_catalog')
+        query = {'portal_type':'Category'}
+        brains = catalog(query, sort_on='title')
+
+        return DisplayList([(brains[id], brains[title]) for brain in brains ])
+
+registerType(Recipe)
+
+
+------------------------
+
+BookReViews:
+
+lofi-rev8:21pmsussman, that's for the ReferenceField - it used the AT
+catalog to reference other objects - you tell it what kinds of objects
+(i.e. allowed_types) to use and what they are related to to
+(relationship - category)
+
+lofi-rev8:21pmThis lets you not need to use the vocabulary at all, and
+it's totally dynamic - ok - now I really go
+
+
+---------------
+
+hazmat:  I would use
+getCategoriesVocabulary()
+
+
+-----------
+
+how to make links to search-urls?
+
+------------
+
+linking docs together:  AT "references"
+
+
+class has a 'validate_fieldname(self, value)' method
+
+
+--------------------
+
+
+
+Ingredient AT
+
+   --> quantity   (integer)
+  
+   --> unit       (textfield with enforceVocabulary set)
+
+   --> reference to a Food document   (popdown list, dynamically
+                                       populated display list from catalog)
+
+
+Food AT
+
+   --> food name  (textfield)
+
+   --> fun facts about food (textfield)
+
+   --> etc.
+
+
+
+Recipe AT
+
+   --> a bunch of textfields
+ 
+   --> list of references to Ingredient documents
