@@ -3,8 +3,6 @@
 
 # Initialization of recipe MySQL tables.
 
-
-CREATE DATABASE effrecipes;
 USE effrecipes;
 
 # Main table of recipes.

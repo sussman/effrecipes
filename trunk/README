@@ -32,21 +32,17 @@ How to Install
    
 * Install Python 2.2 or later.
 
-    (### any need for specific modules?)
-
 * Install MySQL on your system.
 
-    (### user accounts to create?)
+* Create a new 'effrecipes' database (and user) as 'root':
 
-* Create the database.
+    $ mysql -u root -p < init-database.sql
 
-    $ mysql -u [username] -p < init-tables.sql
+* Initialize the 'effrecipes' database tables as user 'effuser':
 
-   init-tables.sql will create a new database called 'effrecipes'.
-   Within this database, it creatse all the tables as user [username],
-   and as a sanity check, prints out a list of the tables.
+    $ mysql -u effuser -p < init-tables.sql
 
-   If you want to destroy the database and start over, run
+* If you want to destroy the database and start over, run
 
     $ mysql -u [username] -p
     Enter password:  XXXXX
