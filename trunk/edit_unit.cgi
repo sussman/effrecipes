@@ -43,7 +43,9 @@ else:
   print 'Change the name:<br/>'
   print '<input name="unit_name" type="text" value="'+ unit.Name + '" ><br/>'
 
-print '<input type="submit" name="submit_button" value="Save">'
+print '<input type="submit" name="save_button" value="Save Record">'
+
+print '<input type="submit" name="delete_button" value="Delete Record">'
 
 print '</form>\n'
 
