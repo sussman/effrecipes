@@ -31,7 +31,9 @@ for record in unitlist:
   print "<td>", record.Name, "</td>"
   print "</tr>\n"
 
-print "</table>"
+print "</table><br/>"
+
+print '<a href="edit_unit.cgi?Id=new">Create new record</a><br/>'
 
 
 # Cleanup and exit
