@@ -63,9 +63,15 @@ How to Install
 Anatomy of Project
 ==================
 
-* SQL layer:  init-database.sql, init-tables.sql
+* SQL layer:  ('sql' directory)
+  init-database.sql  : creates 'effrecipes' database and user
+  init-tables.sql    : creates tables
 
-* Python 'Object' Layer:  recipes.py
+* Python 'Object' Layer:  ('object' directory)
+  recipes.py         : object classes, loadable/saveable from database
 
-* CGI Interface:  frontpage.cgi, edit_unit.cgi, save_unit.cgi
-
+* CGI Interface: ('cgi' directory)
+  frontpage.cgi      : Web UI, dynamically generated HTML and forms.
+  edit_unit.cgi
+  save_unit.cgi
+  
