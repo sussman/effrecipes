@@ -32,7 +32,7 @@ How to Install
    
 * Install Python 2.2 or later.
 
-* Install MySQL on your system.
+* Install MySQL.
 
 * Create a new 'effrecipes' database (and user) as 'root':
 
@@ -51,5 +51,10 @@ How to Install
 
 * Put the CGI scripts in some CGI-exported web directory.
 
-   ### yada yada
+    (For my apache-2.0 httpd.conf, I did something like this:)
+
+   ScriptAlias /recipes/ "/home/sussman/projects/effrecipes/"
+   <Directory "/home/sussman/projects/effrecipes">
+    Options ExecCGI FollowSymLinks
+   </Directory>
 
