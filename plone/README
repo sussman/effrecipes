@@ -9,8 +9,11 @@ reinvention.
 
 OS X plone installation:
 
-  - start with "/Applications/Plone2/Tools/start default"
+  - start with "sudo /Applications/Plone2/Tools/start default"
   - site runs on localhost:8200
+  - accounts:  'admin'/ root-passwd
+               'sussman' / xxx
+
 
 Architecture:
 
@@ -29,7 +32,6 @@ Archetypes:
   - a way of defining new objects
   - object fields can be queried, organized, linked etc.  the "database-ness"
     is implicit in the functionality.
-
 
 
 
