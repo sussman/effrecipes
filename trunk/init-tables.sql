@@ -1,14 +1,15 @@
 # (C) 2003 Ben Collins-Sussman under the GNU General Public License.
 # See the file COPYING for details.
 
-# Initialization of recipe MySQL tables.
+# Initialization of recipe MySQL tables.  This code assumes that an
+# empty 'effrecipes' database has already been created.
 
 USE effrecipes;
 
 # Main table of recipes.
 CREATE TABLE recipes
   (       
-    RecipeId       INT,    # UNIQUE
+    RecipeId       INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Name           VARCHAR(255),
     Rating         INT,
     Instructions   TEXT,
@@ -21,12 +22,13 @@ CREATE TABLE recipes
 # Categories:  breads, cakes, salads, etc.
 CREATE TABLE categories
   (
-    CatId       INT,          # UNIQUE
+    CatId       INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Name        VARCHAR(100)
   );
 
 
 # Category lists:  each recipe might belong to N categories.
+# A single recipe has *multiple* rows in this table.
 CREATE TABLE category_lists
   (
     RecipeId    INT,       # non-unique
@@ -37,7 +39,7 @@ CREATE TABLE category_lists
 # Units:  teaspoon, tablespoons, cups, etc.
 CREATE TABLE units
   (
-    UnitId      INT,       # UNIQUE
+    UnitId      INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Name        VARCHAR(100)
   );
 
@@ -45,13 +47,13 @@ CREATE TABLE units
 # Every kind of food:  bananas, flour, eggs, etc.
 CREATE TABLE ingredients
   (
-    IngId       INT,       # UNIQUE
+    IngId       INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Name        VARCHAR(255)
   );
 
 # Each recipe has *multiple* rows in this table, thus specifying its
 # ingredient list.
-CREATE TABLE ingredient_lists
+CREATE TABLE ingredient_quantities
   (
     RecipeId    INT,  # non-unique
     Amount      REAL, # 3
@@ -63,7 +65,7 @@ CREATE TABLE ingredient_lists
 # A typical user database, for users of the system.
 CREATE TABLE users
   (
-    UserId      INT,          # UNIQUE
+    UserId      INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Username    VARCHAR(30),
     Password    VARCHAR(15),
     Realname    VARCHAR(50),
