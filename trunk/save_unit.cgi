@@ -12,23 +12,30 @@ import cgitb; cgitb.enable()
 
 # -----------------------------------------------------------------
 
-def save_record(form, conn):
-  
+def save_unit_record(form, conn):
+  """Write unit record in FORM to database, overwriting unit with
+  matching Id field..  If FORM has no Id field, a new record is
+  created in database."""
+
   name = form["unit_name"].value
   if form.has_key("unit_id"):
-    id = int(form["unit_id"].value)  # will edit existing record
+    id = int(form["unit_id"].value)
   else:
-    id = None  # will create new record
-    
+    id = None
+
+  # This will either read an existing record (if id is an integer),
+  # or create a new record (if id is None)
   unit_object = recipes.Unit(id, name)
   unit_object.save(conn)
     
-  if id != None:
-    print "Record with Id ", form["unit_id"].value, "has been saved.<br/>\n"
-  else:
+  if id is None:
     print "New record created.<br/>"
+  else:    
+    print "Record with Id ", form["unit_id"].value, "has been saved.<br/>\n"
 
-def delete_record(form, conn):
+
+def delete_unit_record(form, conn):
+  "Delete unit record that matches FORM's Id."
 
   name = form["unit_name"].value
   id = int(form["unit_id"].value)
@@ -52,9 +59,9 @@ print "<h2>Changed record.</h2></head>\n\n"
 form = cgi.FieldStorage()
 
 if form.has_key("save_button"):
-  save_record(form, conn)
+  save_unit_record(form, conn)
 elif form.has_key("delete_button"):
-  delete_record(form, conn)
+  delete_unit_record(form, conn)
 else:
   print "Unknown action -- no button recognized"
 

@@ -85,7 +85,7 @@ def unit_lookup(Id, connection):
     return Unit(row[0], row[1])
 
 
-def unit_query(condition, connection):
+def unit_list(condition, connection):
     """Return a list of objects resulting from a table query for SQL
     CONDITION.  If CONDITION is None, return all objects."""
 
@@ -155,7 +155,7 @@ def ingredient_lookup(Id, connection):
     return Ingredient(row[0], row[1])
 
 
-def ingredient_query(condition, connection):
+def ingredient_list(condition, connection):
     """Return a list of objects resulting from a table query for SQL
     CONDITION.  If CONDITION is None, return all objects."""
 
@@ -188,48 +188,59 @@ class IngredientQuantity:
     self.IngId = IngId             # an IngredientId, like "sugar"
     self.Verb = Verb               # optional modifiers ("refined, chopped")
 
+  def where_clause(self):
+    """Return a SQL 'WHERE' string that uniquely identifies this object,
+    used for reading or deleting."""
+    command = " WHERE "
+    command += "RecipeId=" + str(self.RecipeId)
+    command += "and Amount=" + str(self.Amount)
+    command += "and UnitId=" + str(self.UnitId)
+    command += "and IngId=" + str(self.IngId)
+    if (self.Verb is None):
+      command += "and Verb is NULL"
+    else:
+      command += "and Verb='" + self.Verb + "'"
+    command += ";"
+
   def save(self, connection):
     """Save object to database.  All fields must be defined except 'Verb'."""
 
-    if (self.IngId):
-      fields = "Name='" + self.Name + "'"
-      command = "UPDATE ingredients SET " + fields + " WHERE IngId=" \
-                + str(self.IngId) + ";"
-
-    else:
-      # by not mentioning the Id field, it should auto-increment.
-      fields = "(Name)"
-      values = "(" + "'" + self.Name + "'" + ")"
-      command = "INSERT INTO ingredients " + fields + " VALUES " + values + ";"
-
+    command = "INSERT INTO ingredient_quantities "
+    command += "(RecipeId, Amount, UnitId, IngID, Verb) VALUES ("
+    command += str(self.RecipeId) + "," + str(self.Amount) + ","
+    command += str(self.UnitId) + "," + str(self.IngId) + ","
+    if (self.Verb is not None):
+      command += "," + str(self.Verb)
+    command += ")"
     cursor = connection.cursor()
     cursor.execute(command)
 
   def delete(self, connection):
-    """Delete object from database, keyed on its Id field."""
-
-    command = "DELETE FROM ingredients WHERE IngId=" + str(self.IngId) + ";"
+    """Delete object from database, keyed on ALL its fields."""
+    
+    command = "DELETE FROM ingredient_quantities " + self.where_clause()
     cursor = connection.cursor()
     cursor.execute(command)
+
     
 
 # General 'read' interfaces which return object(s)
 
-def ingredient_lookup(Id, connection):
-    "Construct object by looking it up its ID."
+def ingredientquantity_lookup(Id, connection):
+    "Construct object by looking it up, keyed on ALL its fields."
 
-    query = "SELECT * FROM ingredients WHERE IngId=" + str(Id) + ";"
+    query = "SELECT * FROM ingredient_quantities " + self.where_clause()
     cursor = connection.cursor()
     cursor.execute(query)
-    row = cursor.fetchone()  ### verify there is EXACTLY one hit!
-    return Ingredient(row[0], row[1])
+    row = cursor.fetchone()
+    return IngredientQuantity(row[0], row[1], row[2], row[3], row[4])
 
 
-def ingredient_query(condition, connection):
+def ingredientquantity_query(condition, connection):
     """Return a list of objects resulting from a table query for SQL
     CONDITION.  If CONDITION is None, return all objects."""
 
-    query = "SELECT * FROM ingredients"
+    query = "SELECT * FROM ingredient_quantities"
     if (condition):
       query = query + " WHERE " + condition
     query += ";"    
@@ -239,7 +250,7 @@ def ingredient_query(condition, connection):
     list = []
     row = cursor.fetchone()
     while row:
-      list.append(Ingredient(row[0], row[1]))
+      list.append(IngredientQuantity(row[0], row[1], row[2], row[3], row[4]))
       row = cursor.fetchone()
 
     return list
@@ -260,8 +271,9 @@ def ingredient_query(condition, connection):
 class Recipe:
 
   # Constructor:  all fields already available, just assemble.
+  # Pass "Id=None" if this is a new object, not yet saved.
   def __init__(self, Id, Name, Rating, Instructions,
-               IngredientList, Commentary, ServingHistory, Attribution):
+               Commentary, ServingHistory, Attribution):
     self.RecipeId = Id
     self.Name = Name
     self.Rating = Rating
@@ -269,5 +281,80 @@ class Recipe:
     self.Commentary = Commentary
     self.ServingHistory = ServingHistory
     self.Attribution = Attribution
-    self.IngredientList = IngredientList  # list of IngredientQuantity objects
 
+  def ingredientlist(self, connection):
+    "Return list of all IngredientQuantity records attached to recipe."
+
+    condition = "RecipeId='" + str(self.RecipeId)  + "'" 
+    return ingredientquantity_query(condition, connection)
+
+  def save(self, connection):
+    """Save object to database, keyed on its Id field.  If object's Id
+    field is defined, then overwrite existing record.  Else create new
+    record for Id."""
+
+    if (self.RecipeId):
+      fields = "Name='" + self.Name + "',"
+      fields += "Rating='" + str(self.Rating) + "',"
+      fields += "Instructions='" + self.Instructions + "',"
+      fields += "Commentary='" + self.Commentary + "',"
+      fields += "ServingHistory='" + self.ServingHistory + "',"
+      fields += "Attribution='" + self.Attribution + "' "
+      command = "UPDATE recipes SET " + fields + " WHERE RecipeId=" \
+                + str(self.RecipeId) + ";"
+
+    else:
+      # by not mentioning the Id field, it should auto-increment.
+      fields = "(Name, Rating, Instructions, "
+      fields += " Commentary, ServingHistory, Attribution)"
+      values = "(" + "'" + self.Name + "', "
+      values = "'" + str(self.Rating) + "', "
+      values = "'" + self.Instructions + "', "
+      values = "'" + self.Commentary + "', "
+      values = "'" + self.ServingHistory + "', "
+      values = "'" + self.Attribution + "'"
+      values += ")"
+      command = "INSERT INTO recipes " + fields + " VALUES " + values + ";"
+
+    cursor = connection.cursor()
+    cursor.execute(command)
+
+  def delete(self, connection):
+    """Delete object from database, keyed on its Id field."""
+
+    command = "DELETE FROM recipes WHERE RecipeId=" + str(self.RecipeId) + ";"
+    cursor = connection.cursor()
+    cursor.execute(command)
+    
+
+# General 'read' interfaces which return object(s)
+
+def recipe_lookup(Id, connection):
+    "Construct object by looking it up its ID."
+
+    query = "SELECT * FROM recipes WHERE RecipeId=" + str(Id) + ";"
+    cursor = connection.cursor()
+    cursor.execute(query)
+    row = cursor.fetchone()  ### verify there is EXACTLY one hit!
+    return Unit(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+
+
+def recipe_list(condition, connection):
+    """Return a list of objects resulting from a table query for SQL
+    CONDITION.  If CONDITION is None, return all objects."""
+
+    query = "SELECT * FROM recipes"
+    if (condition):
+      query = query + " WHERE " + condition
+    query += ";"    
+    cursor = connection.cursor()
+    cursor.execute(query)
+
+    list = []
+    row = cursor.fetchone()
+    while row:
+      list.append(Recipe(row[0], row[1], row[2], \
+                         row[3], row[4], row[5], row[6]))
+      row = cursor.fetchone()
+
+    return list
