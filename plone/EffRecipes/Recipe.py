@@ -86,11 +86,11 @@ class Recipe(BaseContent):
 
     schema = schema
 
-    actions = ({
-        'id': 'view',
-        'name': 'View',
-        'action': 'string:${object_url}/recipe_view',
-        'permissions': (CMFCorePermissions.View,)
-        },)
+#    actions = ({
+#        'id': 'view',
+#        'name': 'View',
+#        'action': 'string:${object_url}/recipe_view',
+#        'permissions': (CMFCorePermissions.View,)
+#        },)
 
 registerType(Recipe, PROJECTNAME)
