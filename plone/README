@@ -15,6 +15,13 @@ OS X plone installation:
                'sussman' / xxx
 
 
+DEBUGGING:
+
+  - start zope, not plone, to see why the product didn't load:
+
+          sudo -u plone ./Sites/Default/bin/runzope 
+
+          
 Architecture:
 
      Plone --> CMF --> Zope
