@@ -8,24 +8,17 @@
 # match the object being manipulated.  Each class has methods for
 # reading/writing the object to the database.
 
-# Create "in memory' objects... what are the use-cases?
+
+# Here is the basic API for database records that have unique ID keys:
 #
-#  - READ: user does a query, gets back a list of objects
-#  - MODIFY: edits one object's fields, wants to overwrite existing record.
-#  - CREATE: fills in all fields (but id), new record written & id created.
+#  class foo:
+#     foo(ID):          constructor builds object *in memory) with unique ID.
+#     foo.save():       write in-memory object to database table.
+#     foo.delete():     delete in-memory object from database table.
 #
-#  READ:    1. construct query, get back list of rows
-#           2. convert each row into an object (all fields already present)
-#           3. present list to user, each hyperlinked with an Id
-#           4. create an object based on Id alone (lookup), render.
-#
-#  MODIFY:  1. start with an object, render fields for user
-#           2. user edits fields (but Id is not editable)
-#           3. object constructed from all fields, re-saved under same Id-key.
-#
-#  CREATE:  1. bunch of empty fields presented to user (not Id)
-#           2. object constructed from all fields
-#           3. save object as 'new' --> new Id created.
+#  foo_lookup(ID):      read database, return specific in-memory object
+#  foo_list(condition): query database, return list of matching objects
+
 
 import MySQLdb
 
@@ -178,7 +171,11 @@ def ingredient_list(condition, connection):
 # ------ INGREDIENT QUANTITIES -------------------------------------
 
 # An object that represents some specific quantity of an ingredient.
-# This class has no unique key;  only a non-unique RecipeId key.
+#   - For example:  "3 teaspoons sugar, confectioner's"
+#   - Each record in this table is attached to a recipe;  in other words,
+#     every recipe has a list of ingredient-quantity records.
+#   - This class has no unique key;  only a non-unique RecipeId key.
+
 class IngredientQuantity:
 
   def __init__(self, RecipeId, Amount, UnitId, IngId, Verb=None):
@@ -188,6 +185,9 @@ class IngredientQuantity:
     self.IngId = IngId             # an IngredientId, like "sugar"
     self.Verb = Verb               # optional modifiers ("refined, chopped")
 
+  # Because a record in this table has no unique ID field, the only
+  # way to find a specific record is to construct a WHERE clause based
+  # on the object's fields:
   def where_clause(self):
     """Return a SQL 'WHERE' string that uniquely identifies this object,
     used for reading or deleting."""
@@ -206,12 +206,16 @@ class IngredientQuantity:
     """Save object to database.  All fields must be defined except 'Verb'."""
 
     command = "INSERT INTO ingredient_quantities "
-    command += "(RecipeId, Amount, UnitId, IngID, Verb) VALUES ("
+    command += "(RecipeId, Amount, UnitId, IngID"
+    if (self.Verb is not None):
+      command += ", Verb"
+    command += ") VALUES ("
     command += str(self.RecipeId) + "," + str(self.Amount) + ","
-    command += str(self.UnitId) + "," + str(self.IngId) + ","
+    command += str(self.UnitId) + "," + str(self.IngId)
     if (self.Verb is not None):
       command += "," + str(self.Verb)
     command += ")"
+    print "command is: ", command
     cursor = connection.cursor()
     cursor.execute(command)
 
