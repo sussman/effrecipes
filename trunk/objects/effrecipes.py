@@ -220,6 +220,14 @@ class IngredientQuantity:
       command += "and Verb='" + self.Verb + "'"
     command += ";"
 
+  def toString(self, connection):
+    """Return a string which describes the ingredientquantity"""
+    unit = unit_lookup(self.UnitId, connection)
+    ingredient = ingredient_lookup(self.IngId, connection)
+    string = str(self.Amount) + " " + unit.Name + " " \
+             + ingredient.Name + " " + self.Verb
+    return string
+
   def save(self, connection):
     """Save object to database.  All fields must be defined except 'Verb'."""
 

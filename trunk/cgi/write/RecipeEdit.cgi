@@ -103,10 +103,10 @@ form = cgi.FieldStorage()
 val = form["Id"].value   # field is either record id or 'new'
 
 if val == 'new':
-  print_header("New Recipe")
+  print_header("New Recipe Details")
   print_new_form()
 else:
-  print_header("Edit Recipe")
+  print_header("Edit Recipe Details")
   print_populated_form(int(val), conn)
 print_footer()
 

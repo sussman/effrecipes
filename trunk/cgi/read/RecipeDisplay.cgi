@@ -26,6 +26,7 @@ conn = MySQLdb.connect(user='effuser', passwd='effuser', db='effrecipes')
 form = cgi.FieldStorage()
 val = form["Id"].value   # this better be a valid ID
 recipe = effrecipes.recipe_lookup(int(val), conn)
+recipe_ingredients = recipe.ingredientlist(conn)
 
 # Initial generic HTML 'header' output
 
@@ -33,15 +34,29 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>Effrecipes -- Recipe Display</title>\n"
 print '<h1>Recipe: "' + recipe.Name + '"</h1></head>\n\n'
 
-print "<p>(click the recipe's name to modify it)</p>"
+# Show ingredient list
+
+print '<h2>Ingredients</h2>'
+print '<h3><a href="../write/RecipeEditIngs.cgi?Id=' + str(recipe.RecipeId) \
+        +'">(Add an ingredient)</a></h3>'
+
+
+print '<h3>'
+for record in recipe_ingredients:  # a bunch of IngredientQuantity records
+  print record.toString(), '<br/>'
+print "</h3><br/>"
+
+# Show the recipe record itself
+
+print '<h2>Details</h2>'
+print '<h3><a href="../write/RecipeEdit.cgi?Id=' + str(recipe.RecipeId) \
+        +'">(Change these details)</a></h3>'
 
 print '<table border=1>\n'
 
 print '<tr><td>Recipe ID</td> <td>', recipe.RecipeId, '</td></tr>'
 
-print '<tr><td>Name</td>'
-print '<td><a href="../write/RecipeEdit.cgi?Id=' + str(recipe.RecipeId) \
-        +'">', recipe.Name, '</a></td></tr>'
+print '<tr><td>Name</td> <td>' + recipe.Name + '</td></tr>'
 
 print '<tr><td>Rating</td> <td>', recipe.Rating, '</td></tr>'
 
