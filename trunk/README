@@ -8,8 +8,8 @@ software feature set is incredibly specific to Eff's needs.  If you
 don't like it, too bad.  This is the perk Frances gets from marrying a
 programmer.  :-)
 
-Ben retains the copyright to this code, but license is in the file
-COPYING, which is essentially an Apache/BSD-style license.
+Ben retains the copyright to this code, but license is GPL'd.  See the
+file COPYING.
 
 For a complete list of authors, read the Subversion log messages.
 C. Mike Pilato helped design the db schema, and I'm guessing will
