@@ -330,11 +330,11 @@ class Recipe:
       fields = "(Name, Rating, Instructions, "
       fields += " Commentary, ServingHistory, Attribution)"
       values = "(" + "'" + self.Name + "', "
-      values = "'" + str(self.Rating) + "', "
-      values = "'" + self.Instructions + "', "
-      values = "'" + self.Commentary + "', "
-      values = "'" + self.ServingHistory + "', "
-      values = "'" + self.Attribution + "'"
+      values += "'" + str(self.Rating) + "', "
+      values += "'" + self.Instructions + "', "
+      values += "'" + self.Commentary + "', "
+      values += "'" + self.ServingHistory + "', "
+      values += "'" + self.Attribution + "'"
       values += ")"
       command = "INSERT INTO recipes " + fields + " VALUES " + values + ";"
 
@@ -360,7 +360,7 @@ def recipe_lookup(Id, connection):
     cursor = connection.cursor()
     run_sql(query, cursor)
     row = cursor.fetchone()  ### verify there is EXACTLY one hit!
-    return Unit(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+    return Recipe(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
 
 
 def recipe_list(condition, connection):
