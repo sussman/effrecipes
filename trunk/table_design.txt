@@ -1,0 +1,51 @@
+
+Table1:  Recipes
+
+RecipeID ->  various fields
+
+
+Table2:  Units
+
+UnitID ->  cup
+UnitID ->  tsp
+etc.
+
+
+Table3:  Ingredients
+
+IngID  ->  bananas
+IngID  ->  flour
+etc.
+
+Table4:  IngredientList
+
+RecipeID ->  amount,  UnitID,  IngID    (i.e. "3 cups flour")
+etc.
+
+
+Thus a recipes' ingredients are displayed by selecting all rows from
+Table4 that match the RecipeID.  The same idea applies when querying
+tables 6-9 below:
+
+
+Table5:  Users
+
+UserID  ->  name, password
+
+Table6:  Likes
+
+UserID  -> IngID
+etc.
+
+Table7:  Dislikes
+
+UserID  -> IngID
+
+Table8:  Allergies
+
+UserID  -> IngID
+
+Table9:  Votes
+
+UserID  -> RecipeID, score
+
