@@ -26,7 +26,8 @@ print "<table border=1><tr><td>UnitID</td><td>Name</td></tr>\n"
 unitlist = recipes.unit_query(None, conn)
 for record in unitlist:
   print "<tr>"
-  print '<td><a href="edit_unit.cgi">', record.UnitId, '</a></td>'
+  print '<td><a href="edit_unit.cgi?Id='+ str(record.UnitId) \
+        +'">', record.UnitId, '</a></td>'
   print "<td>", record.Name, "</td>"
   print "</tr>\n"
 
