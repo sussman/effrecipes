@@ -24,31 +24,32 @@ def save_record(form, conn):
   matching Id field..  If FORM has no Id field, a new record is
   created in database."""
 
-  name = form["unit_name"].value
-  if form.has_key("unit_id"):
-    id = int(form["unit_id"].value)
+  name = form["ingredient_name"].value
+  if form.has_key("ingredient_id"):
+    id = int(form["ingredient_id"].value)
   else:
     id = None
 
   # This will either read an existing record (if id is an integer),
   # or create a new record (if id is None)
-  unit_object = effrecipes.Unit(id, name)
-  unit_object.save(conn)
+  ingredient_object = effrecipes.Ingredient(id, name)
+  ingredient_object.save(conn)
     
   if id is None:
     print "New record created.<br/>"
   else:    
-    print "Record with Id ", form["unit_id"].value, "has been saved.<br/>\n"
+    print "Record with Id ", form["ingredient_id"].value, \
+          "has been saved.<br/>\n"
 
 
 def delete_record(form, conn):
   "Delete record that matches FORM's Id."
 
-  name = form["unit_name"].value
-  id = int(form["unit_id"].value)
+  name = form["ingredient_name"].value
+  id = int(form["ingredient_id"].value)
   
-  unit_object = effrecipes.Unit(id, name)
-  unit_object.delete(conn)
+  ingredient_object = effrecipes.Ingredient(id, name)
+  ingredient_object.delete(conn)
   
   print "Record deleted.<br/>"
 
@@ -71,8 +72,8 @@ elif form.has_key("delete_button"):
 else:
   print "Unknown action -- no button recognized"
 
-print 'Go back to the <a href="../read/UnitListDisplay.cgi">'\
-      + 'list of all Units.</a>.\n'
+print 'Go back to the <a href="../read/IngredientListDisplay.cgi">'\
+      + 'list of all Ingredients.</a>.\n'
 
 # Cleanup and exit
 print "</html>"

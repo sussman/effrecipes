@@ -28,6 +28,21 @@ import MySQLdb
 #  conn = MySQLdb.connect(user='effuser', passwd='effuser', db='effrecipes')
 
 
+# ----- DB COMMANDS -------------------------------------------------
+
+# It's much easier to debug the SQL commands we execute if they're
+# appended to a logfile.  Here's a wrapper for that.
+
+logfile = "/home/sussman/projects/effrecipes/sql_log"  ### generalize this
+
+def run_sql(command, cursor):
+  "Use db cursor to execute sql command, logging command to a file first."
+  fp = open(logfile, 'a')  # open in (a)ppend mode
+  fp.write(command + "\n")
+  fp.close()
+  cursor.execute(command)
+
+
 # ------ UNITS -------------------------------------------------------
 
 # a basic unit of measure.  the db table is just a name and unique id.
@@ -56,14 +71,15 @@ class Unit:
       command = "INSERT INTO units " + fields + " VALUES " + values + ";"
 
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
+
 
   def delete(self, connection):
     """Delete object from database, keyed on its Id field."""
 
     command = "DELETE FROM units WHERE UnitId=" + str(self.UnitId) + ";"
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
     
 
 # General 'read' interfaces which return object(s)
@@ -73,7 +89,7 @@ def unit_lookup(Id, connection):
 
     query = "SELECT * FROM units WHERE UnitId=" + str(Id) + ";"
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
     row = cursor.fetchone()  ### verify there is EXACTLY one hit!
     return Unit(row[0], row[1])
 
@@ -87,7 +103,7 @@ def unit_list(condition, connection):
       query = query + " WHERE " + condition
     query += ";"    
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
 
     list = []
     row = cursor.fetchone()
@@ -126,14 +142,16 @@ class Ingredient:
       command = "INSERT INTO ingredients " + fields + " VALUES " + values + ";"
 
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
+
 
   def delete(self, connection):
     """Delete object from database, keyed on its Id field."""
 
     command = "DELETE FROM ingredients WHERE IngId=" + str(self.IngId) + ";"
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
+
     
 
 # General 'read' interfaces which return object(s)
@@ -143,7 +161,7 @@ def ingredient_lookup(Id, connection):
 
     query = "SELECT * FROM ingredients WHERE IngId=" + str(Id) + ";"
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
     row = cursor.fetchone()  ### verify there is EXACTLY one hit!
     return Ingredient(row[0], row[1])
 
@@ -157,7 +175,7 @@ def ingredient_list(condition, connection):
       query = query + " WHERE " + condition
     query += ";"    
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
 
     list = []
     row = cursor.fetchone()
@@ -217,14 +235,14 @@ class IngredientQuantity:
     command += ")"
     print "command is: ", command
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
 
   def delete(self, connection):
     """Delete object from database, keyed on ALL its fields."""
     
     command = "DELETE FROM ingredient_quantities " + self.where_clause()
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
 
     
 
@@ -235,7 +253,7 @@ def ingredientquantity_lookup(Id, connection):
 
     query = "SELECT * FROM ingredient_quantities " + self.where_clause()
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
     row = cursor.fetchone()
     return IngredientQuantity(row[0], row[1], row[2], row[3], row[4])
 
@@ -249,7 +267,7 @@ def ingredientquantity_query(condition, connection):
       query = query + " WHERE " + condition
     query += ";"    
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
 
     list = []
     row = cursor.fetchone()
@@ -321,14 +339,16 @@ class Recipe:
       command = "INSERT INTO recipes " + fields + " VALUES " + values + ";"
 
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
+
 
   def delete(self, connection):
     """Delete object from database, keyed on its Id field."""
 
     command = "DELETE FROM recipes WHERE RecipeId=" + str(self.RecipeId) + ";"
     cursor = connection.cursor()
-    cursor.execute(command)
+    run_sql(command, cursor)
+
     
 
 # General 'read' interfaces which return object(s)
@@ -338,7 +358,7 @@ def recipe_lookup(Id, connection):
 
     query = "SELECT * FROM recipes WHERE RecipeId=" + str(Id) + ";"
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
     row = cursor.fetchone()  ### verify there is EXACTLY one hit!
     return Unit(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
 
@@ -352,7 +372,7 @@ def recipe_list(condition, connection):
       query = query + " WHERE " + condition
     query += ";"    
     cursor = connection.cursor()
-    cursor.execute(query)
+    run_sql(query, cursor)
 
     list = []
     row = cursor.fetchone()
