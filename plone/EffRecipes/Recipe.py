@@ -30,8 +30,8 @@ schema = BaseSchema +  Schema((
             required=1,
             rows=8,
             format=1,
-            widget=TextAreaWidget(label="Ingredients",
-                                  description="This is very tricky, see docs."),
+            widget=RichWidget(label="Ingredients",
+                              description="This is very tricky, see docs."),
             ),
 
   TextField('instructions',
@@ -39,15 +39,15 @@ schema = BaseSchema +  Schema((
             required=1,
             primary=1,   # this field will be returned by DAV and FTP
             rows=10,
-            widget=TextAreaWidget(label="Instructions",
-                                  description="Describe how to prepare the food."),
+            widget=RichWidget(label="Instructions",
+                              description="Describe how to prepare the food."),
             ),
 
   TextField('servinghistory',
             searchable=1,
             rows=5,
-            widget=TextAreaWidget(label="Serving History",
-                                  description="When was this dish served?"),
+            widget=RichWidget(label="Serving History",
+                              description="When was this dish served?"),
             ),
 
   StringField('attribution',
