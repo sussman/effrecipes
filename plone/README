@@ -57,6 +57,18 @@ Goal for today:
 
        - front-page link to search-urls
 
+
+
+APPLY PATCH:
+
+http://sourceforge.net/tracker/index.php?func=detail&aid=1093026&group_id=75272&atid=543430
+
+
+
+
+
+
+
   - workflow:
 
       - who gets to review/publish things?  how do roles work?
@@ -164,3 +176,19 @@ Recipe AT
    --> a bunch of textfields
  
    --> list of references to Ingredient documents
+
+
+----------------
+
+Get 'kupu', a wysiwyg embeddable html editor, so that html is always generated.
+
+or...
+
+<geoffd> if in your accessor you do
+<geoffd> getMyField(mimetype='text/plain')
+<geoffd> instead of getMyField()
+<geoffd> it will convert to text/plain
+<geofd> alternatively, you could write your accessor like so:
+<geoffd> def getMyField(self):
+<geoffd> pt = getToolByName(self, 'portal_Transforms')
+<geoffd> return pt.convertTo('text/plain', self.attribute_where_my_field_is_stored)
