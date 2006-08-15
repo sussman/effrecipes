@@ -21,8 +21,8 @@ class RecipeCategory(models.Model):
 # This is broken out specifically so that we can compile shopping
 # lists for sets of selected recipes.  Another many-to-many relationship.
 
-class Ingredient(models.Model):
-  name = models.CharField('Ingredient', maxlength=200)
+class Food(models.Model):
+  name = models.CharField('Food', maxlength=200)
 
   def __str__(self):
     return self.name
@@ -44,29 +44,11 @@ class Unit(models.Model):
     pass
 
 
-# These are the actual objects that get attached to recipes, as a many
-# to one relationship.  Example:  "3 cups spinach, chapped"
-
-class IngredientQuantity(models.Model):
-  quantity = models.IntegerField('Amount')
-  unit = models.ForeignKey(Unit)
-  ingredient = models.ForeignKey(Ingredient)
-  verb = models.CharField('Verb', maxlength=200)
-
-  def __str__(self):
-    return "%d %s %s, %s" % (self.quantity, self.unit,
-                             self.ingredient, self.verb)
-  class Admin:
-    pass
-
-
 # Main recipe object, to glue it all together.
 
 class Recipe(models.Model):
   title = models.CharField('Recipe Title', maxlength=200)
   servings = models.IntegerField('Number of Servings')
-  ingredients = models.ManyToManyField(IngredientQuantity,
-                                       filter_interface = models.HORIZONTAL)
   instructions = models.TextField('Instructions')
 
   categories = models.ManyToManyField(RecipeCategory)
@@ -86,4 +68,23 @@ class Recipe(models.Model):
   class Admin:
     pass
 
+
+# These are the actual objects that get attached to recipes, as a many
+# to one relationship.  Example:  "3 cups spinach, chapped"
+
+class Ingredient(models.Model):
+  quantity = models.FloatField('Amount', max_digits=5, decimal_places=2)
+  unit = models.ForeignKey(Unit)
+  food = models.ForeignKey(Food, core=True)
+  verb = models.CharField('Verb', maxlength=200, blank=True)
+  recipe = models.ForeignKey(Recipe, edit_inline=models.TABULAR)
+
+  def __str__(self):
+    if self.verb is not None:
+      return "%d %s %s, %s" % (self.quantity, self.unit, self.food, self.verb)
+    else:
+      return "%d %s %s" % (self.quantity, self.unit, self.food)
+
+  class Admin:
+    pass
 
