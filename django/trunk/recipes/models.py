@@ -8,7 +8,7 @@ from django.db import models
 # relationship.
 
 class RecipeCategory(models.Model):
-  name = models.CharField('Category Name', maxlength=200)
+  name = models.CharField('Recipe Category', maxlength=200)
 
   def __str__(self):
     return self.name
@@ -47,19 +47,24 @@ class Unit(models.Model):
 # Main recipe object, to glue it all together.
 
 class Recipe(models.Model):
+  # Top-level metadata
   title = models.CharField('Recipe Title', maxlength=200)
+  attribution = models.CharField('Attribution', maxlength=200)
   servings = models.IntegerField('Number of Servings')
+  preptime = models.IntegerField('Preparation Time (minutes)')
+  categories = models.ManyToManyField(RecipeCategory)
+
+  # Main meat (includes ingredient listing!)
   instructions = models.TextField('Instructions')
 
-  categories = models.ManyToManyField(RecipeCategory)
-  effrating = models.IntegerField('Numerical Rating')
+  # Other metadata
   pub_date = models.DateTimeField('Date Published')
   servinghistory = models.TextField('Serving History')
-  attribution = models.CharField('Attribution', maxlength=200)
+  effrating = models.IntegerField('Numerical Rating')
+  comments = models.TextField('Commentary')
 
   # TODO:  add other fields someday:
   #   photo
-  #   ingredient lists (oh god)
   #   users attach comments to recipes
 
   def __str__(self):
@@ -67,10 +72,20 @@ class Recipe(models.Model):
 
   class Admin:
     pass
+    fields = (
+      (None, {'fields': ('title', 'attribution', 'servings',
+                         'preptime', 'categories')}),
+      ('Recipe Details', {'fields': ('instructions',)}),
+      ('Commentary', {'fields': ('pub_date', 'servinghistory',
+                                 'effrating', 'comentary')}),
+      )
 
 
 # These are the actual objects that get attached to recipes, as a many
-# to one relationship.  Example:  "3 cups spinach, chapped"
+# to one relationship.  Example: "3 cups spinach, chapped".
+
+# Someday we hope to write a feature which adds recipe ingredients
+# together to generate grocery shopping lists.
 
 class Ingredient(models.Model):
   quantity = models.FloatField('Amount', max_digits=5, decimal_places=2)

@@ -6,4 +6,7 @@ urlpatterns = patterns('',
 
     # Uncomment this for admin:
      (r'^admin/', include('django.contrib.admin.urls')),
+
+     (r'^recipes/$', 'effrecipes.recipes.views.index'),
+     (r'^recipes/(?P<recipe_id>\d+)/$', 'effrecipes.recipes.views.detail'),
 )
