@@ -1,0 +1,58 @@
+<h1>{{ recipe.title }}</h1>
+
+
+{% if recipe.photo %}
+<img src="{{ recipe.photo }}"/>
+{% endif %}
+
+<ul>
+{% if recipe.attribution %}
+<li><b>Attribution</b>: {{ recipe.attribution }}</li>
+{% endif %}
+
+{% if recipe.servings %}
+<li><b>Number of Servings</b>: {{ recipe.servings }}</li>
+{% endif %}
+
+{% if recipe.preptime %}
+<li><b>Preparation Time</b>: {{ recipe.preptime }}</li>
+{% endif %}
+
+<li><b>Recipe categories</b>:
+<ul>
+{% for cat in catlist %}
+    <li>{{ cat }}</li>
+{% endfor %}
+</ul>
+</li>
+</ul>
+
+<hr/>
+
+<ul>
+{% for ing in inglist %}
+    <li>{{ ing }}</li>
+{% endfor %}
+</ul>
+
+{{ recipe.instructions|linebreaksbr }}
+
+<hr/>
+
+<ul>
+{% if recipe.pub_date %}
+<li><b>Date published</b>: {{ recipe.pub_date }}</li>
+{% endif %}
+
+{% if recipe.effrating %}
+<li><b>Eff's Rating</b>: {{ recipe.effrating }}</li>
+{% endif %}
+
+{% if recipe.servinghistory %}
+<li><b>Serving history</b>: {{ recipe.servinghistory|linebreaksbr }}</li>
+{% endif %}
+
+{% if recipe.comments %}
+<li><b>Comments</b>: {{ recipe.comments|linebreaksbr }}</li>
+{% endif %}
+</ul>

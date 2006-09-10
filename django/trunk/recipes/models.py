@@ -49,53 +49,61 @@ class Unit(models.Model):
 class Recipe(models.Model):
   # Top-level metadata
   title = models.CharField('Recipe Title', maxlength=200)
-  attribution = models.CharField('Attribution', maxlength=200)
-  servings = models.IntegerField('Number of Servings')
-  preptime = models.IntegerField('Preparation Time (minutes)')
+  attribution = models.CharField('Attribution', maxlength=200,
+                                 null=True, blank=True)
+  servings = models.IntegerField('Number of Servings',
+                                 null=True, blank=True)
+  preptime = models.CharField('Preparation Time', maxlength=200,
+                              null=True, blank=True)
   categories = models.ManyToManyField(RecipeCategory)
 
   # Main meat (includes ingredient listing!)
+  photo = models.ImageField('Photo or Image', upload_to='photos',
+                            null=True, blank=True)
   instructions = models.TextField('Instructions')
 
   # Other metadata
-  pub_date = models.DateTimeField('Date Published')
-  servinghistory = models.TextField('Serving History')
-  effrating = models.IntegerField('Numerical Rating')
-  comments = models.TextField('Commentary')
+  pub_date = models.DateTimeField('Date Published',
+                                  null=True, blank=True)
+  servinghistory = models.TextField('Serving History',
+                                    null=True, blank=True)
+  effrating = models.IntegerField('Numerical Rating',
+                                  null=True, blank=True)
+  comments = models.TextField('Comments',
+                              null=True, blank=True)
 
-  # TODO:  add other fields someday:
-  #   photo
-  #   users attach comments to recipes
+  # TODO: users attach discussion threads to recipes
+  # TODO: users rank recipes themselves
 
   def __str__(self):
     return self.title
 
   class Admin:
-    pass
+    # Lay out the generated input-screen a bit more nicely.
     fields = (
       (None, {'fields': ('title', 'attribution', 'servings',
                          'preptime', 'categories')}),
-      ('Recipe Details', {'fields': ('instructions',)}),
-      ('Commentary', {'fields': ('pub_date', 'servinghistory',
-                                 'effrating', 'comentary')}),
+      ('Recipe Details', {'fields': ('photo', 'instructions',)}),
+      ('Commentary', {'fields': ('pub_date', 'effrating', 'servinghistory',
+                                 'comments')}),
       )
 
 
 # These are the actual objects that get attached to recipes, as a many
 # to one relationship.  Example: "3 cups spinach, chapped".
 
-# Someday we hope to write a feature which adds recipe ingredients
+# Someday we can write a feature which adds recipe ingredients
 # together to generate grocery shopping lists.
 
 class Ingredient(models.Model):
   quantity = models.FloatField('Amount', max_digits=5, decimal_places=2)
   unit = models.ForeignKey(Unit)
   food = models.ForeignKey(Food, core=True)
-  verb = models.CharField('Verb', maxlength=200, blank=True)
+  verb = models.CharField('Verb', maxlength=200, null=True, blank=True)
   recipe = models.ForeignKey(Recipe, edit_inline=models.TABULAR)
 
   def __str__(self):
-    if self.verb is not None:
+    if self.verb:
       return "%d %s %s, %s" % (self.quantity, self.unit, self.food, self.verb)
     else:
       return "%d %s %s" % (self.quantity, self.unit, self.food)
