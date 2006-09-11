@@ -1,0 +1,27 @@
+<head>
+<title>Eff Recipes Search Results</title>
+</head>
+
+<!-- list variable 'recipes' is used to render this template -->
+
+<h1>Search Results</h1>
+
+{% if recipes %}
+
+  <p>
+  Here are the recipes which match your query:
+  </p>
+
+  <ul>
+  {% for recipe in recipes %}
+     <li><a href="../../{{ recipe.id }}">{{ recipe }}</a></li>
+  {% endfor %}
+  </ul>
+
+{% else %}
+
+  <p>
+  Sorry, no results matched your query.
+  </p>
+
+{% endif %}
