@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
+from django.db.models import Q
 from effrecipes.recipes.models import *
 
 # From the tutorial: every URL callback must either return an
@@ -17,10 +18,15 @@ def index(request):
 
 # Function which processes a search request from the front page (via POST)
 def recipe_search(request):
-  # term = request.POST['search_string']
+  term = request.POST['searchtext']
 
-  # do some actual database searching, create 'recipes' list.
-
+  ## TODO: search over ingredient lists too!!
+  recipes = Recipe.objects.filter(
+    Q(title__contains=term)
+    | Q(instructions__contains=term)
+    | Q(servinghistory__contains=term)
+    | Q(attribution__contains=term)
+    )
   return render_to_response('searchresults.html', { 'recipes' : recipes } )
 
 
