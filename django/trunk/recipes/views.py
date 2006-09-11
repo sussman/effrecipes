@@ -9,7 +9,25 @@ from effrecipes.recipes.models import *
 
 # Front page of site
 def index(request):
-  return HttpResponse("Hello, this is Eff's Recipe Collection.")
+  num_recipes = Recipe.objects.count()
+  cats = RecipeCategory.objects.all()
+  return render_to_response('frontpage.html', {'recipecount' : num_recipes,
+                                               'cats' : cats })
+
+
+# Function which processes a search request from the front page (via POST)
+def recipe_search(request):
+  # term = request.POST['search_string']
+
+  # do some actual database searching, create 'recipes' list.
+
+  return render_to_response('searchresults.html', { 'recipes' : recipes } )
+
+
+# Display all recipes within a category
+def show_category(request, category_id):
+  recipes = Recipe.objects.filter(categories__id__exact=category_id)
+  return render_to_response('searchresults.html', { 'recipes' : recipes } )
 
 
 # Read-only view of a single recipe

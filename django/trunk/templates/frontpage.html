@@ -1,0 +1,60 @@
+<head>
+<title>Eff's Recipe Database</title>
+</head>
+
+<body>
+<center>
+<h1>Eff's Recipe Database</h1>
+
+<p>
+The database currently contains {{ recipecount }} recipes.
+</p>
+
+</center>
+
+
+<!-- TODO(sussman):  show most recent 5 recipes entered, with nice --
+  -- href links -->
+
+
+<!-- Search interface: -->
+
+<h2>Search for text within recipes:</h2>
+
+<p>
+This form will search for text within recipe titles, ingredient lists,
+preparation instructions, attributions, and serving history.
+</p>
+
+<form action="/recipes/search/" method="post">
+  <input type="text" name="searchtext" id="searchtext" size=30/>
+  <input type="submit" value="Search"/>
+</form>
+
+<h2>OR</h2>
+
+<p>
+Click on a link below to see all recipes within a category.
+</p>
+
+<ul>
+   {% for cat in cats %}
+    <li><a href="/recipes/category/{{ cat.id }}/">{{ cat }}</a></li>
+   {% endfor %}
+</ul>
+
+<hr/>
+
+<p>
+Written by <a href="http://www.red-bean.com/sussman">Ben
+  Collins-Sussman</a> for his lovely wife, using
+  the <a href="http://www.djangoproject.com">Django</a> framework.
+</p>
+
+<p>
+<em>Note:  this is a temporary (lack of) interface, just to get things
+  working.  If anyone wants to step in and do some real design work,
+  speak up!</em>
+</p>
+
+</body>

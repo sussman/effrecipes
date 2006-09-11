@@ -6,6 +6,16 @@
 {% endif %}
 
 <ul>
+{% for ing in inglist %}
+    <li>{{ ing }}</li>
+{% endfor %}
+</ul>
+
+{{ recipe.instructions|linebreaksbr }}
+
+<hr/>
+
+<ul>
 {% if recipe.attribution %}
 <li><b>Attribution</b>: {{ recipe.attribution }}</li>
 {% endif %}
@@ -25,21 +35,7 @@
 {% endfor %}
 </ul>
 </li>
-</ul>
 
-<hr/>
-
-<ul>
-{% for ing in inglist %}
-    <li>{{ ing }}</li>
-{% endfor %}
-</ul>
-
-{{ recipe.instructions|linebreaksbr }}
-
-<hr/>
-
-<ul>
 {% if recipe.pub_date %}
 <li><b>Date published</b>: {{ recipe.pub_date }}</li>
 {% endif %}
