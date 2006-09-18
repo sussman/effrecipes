@@ -1,17 +1,27 @@
 from django.db import models
+from django.contrib.auth.models import Group
 
 # Data Models for Database of Cookbook Recipes.
 
 
 # Categories of recipes: breads, appetizers, desserts, soups, etc.  A
 # recipe can be a member of many categories, so it's a many-to-many
-# relationship.
+# relationship.  Much like 'labels' in gmail.
+#
+# If IS_PRIMARY is true, then the category is considered so important
+# that it gets listed as a clickable link on the front page, part of a
+# table of contents.
 
 class RecipeCategory(models.Model):
   name = models.CharField('Recipe Category', maxlength=200)
+  is_primary = models.BooleanField()
 
   def __str__(self):
     return self.name
+
+  class Meta:
+    verbose_name = _('Recipe Category')
+    verbose_name_plural = _('Recipe Categories')
 
   class Admin:
     pass
@@ -55,7 +65,7 @@ class Recipe(models.Model):
                                  null=True, blank=True)
   preptime = models.CharField('Preparation Time', maxlength=200,
                               null=True, blank=True)
-  categories = models.ManyToManyField(RecipeCategory)
+  categories = models.ManyToManyField(RecipeCategory, related_name="recipes")
 
   # Main meat (includes ingredient listing!)
   photo = models.ImageField('Photo or Image', upload_to='photos',
@@ -72,6 +82,12 @@ class Recipe(models.Model):
   comments = models.TextField('Comments',
                               null=True, blank=True)
 
+  # Authorization groups (NOT YET USED)
+  readgroups = models.ManyToManyField(Group, related_name="readable",
+                                      null=True, blank=True)
+  writegroups = models.ManyToManyField(Group, related_name="writeable",
+                                      null=True, blank=True)
+
   # TODO: users attach discussion threads to recipes
   # TODO: users rank recipes themselves
 
@@ -84,8 +100,8 @@ class Recipe(models.Model):
       (None, {'fields': ('title', 'attribution', 'servings',
                          'preptime', 'categories')}),
       ('Recipe Details', {'fields': ('photo', 'instructions',)}),
-      ('Commentary', {'fields': ('pub_date', 'effrating', 'servinghistory',
-                                 'comments')}),
+      ('Metadata', {'fields': ('pub_date', 'effrating', 'servinghistory',
+                               'comments', 'readgroups', 'writegroups')}),
       )
 
 
