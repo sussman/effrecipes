@@ -1,0 +1,22 @@
+
+PROBLEM: clicking recipe from search is malformed url.  need to
+reorganize url space for consistency.
+
+
+PROBLEM:  can't search over foods in ingredient lists
+
+
+PROBLEM:  make sure photo upload actually works.
+
+
+------------------
+
+red-bean deployment:
+
+
+  * is mod_python installed?
+  * is django installed?
+  * set up mysql perms appropriately
+  * set up mysql backup strategy (cron job?)
+  * find home for application.
+
